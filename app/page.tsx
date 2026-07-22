@@ -1,0 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const copy = {
+  es: { projects:"Proyectos", contact:"Contactar", eyebrow:"Arquitectura · Buenos Aires", title:"Arq. Chiara Larrosa", subtitle:"Arquitectura, visualización y documentación ejecutiva", intro:"Diseño espacios con precisión técnica, sensibilidad material y una mirada contemporánea.", view:"Ver proyecto", about:"Perfil", aboutText:"Arquitecta graduada en la UNLaM con 8 años de experiencia en construcción técnica. Integro proyecto, documentación, modelado y visualización para convertir ideas en obras claras, viables y bien resueltas.", exp:"8 años", label:"de experiencia técnica", project:"Proyecto Guayaquil", status:"Anteproyecto residencial · Próximo a construirse", location:"Buenos Aires, Argentina", story:"Una vivienda pensada desde la continuidad espacial, la luz natural y una materialidad cálida. El proyecto fue desarrollado integralmente, desde la definición arquitectónica hasta su documentación y visualización.", exterior:"Una fachada de líneas puras", exteriorText:"Volúmenes definidos, textura pétrea y carpinterías oscuras construyen una presencia urbana sobria.", interior:"Interior continuo", interiorText:"Los ambientes se conectan visualmente y la madera aporta calidez a una arquitectura precisa.", documents:"Documentación técnica", documentsText:"Plantas, cortes y vistas desarrollados como base ejecutiva del proyecto.", renders:"Recorrido visual", cv:"Descargar CV", close:"Cerrar", mail:"Correo", phone:"Teléfono", linkedin:"LinkedIn", footer:"Arquitectura que une idea, técnica y materialidad." },
+  en: { projects:"Projects", contact:"Contact", eyebrow:"Architecture · Buenos Aires", title:"Arq. Chiara Larrosa", subtitle:"Architecture, visualization & construction documentation", intro:"I design spaces with technical precision, material sensitivity and a contemporary perspective.", view:"View project", about:"Profile", aboutText:"UNLaM graduate architect with 8 years of experience in technical construction. I connect design, documentation, modeling and visualization to turn ideas into clear, feasible and well-resolved buildings.", exp:"8 years", label:"of technical experience", project:"Guayaquil Project", status:"Residential project · To be built", location:"Buenos Aires, Argentina", story:"A home shaped by spatial continuity, natural light and warm materials. The project was developed in full, from architectural definition to documentation and visualization.", exterior:"A clean-lined façade", exteriorText:"Defined volumes, stone texture and dark frames create a sober urban presence.", interior:"Continuous interior", interiorText:"Spaces connect visually while wood adds warmth to a precise architecture.", documents:"Technical documentation", documentsText:"Plans, sections and elevations developed as the project's construction base.", renders:"Visual journey", cv:"Download CV", close:"Close", mail:"Email", phone:"Phone", linkedin:"LinkedIn", footer:"Architecture connecting idea, technique and materiality." }
+};
+
+const renders = ["1(1).png","3(1).png","4(1).png","5(1).png","6(1).png","7(1).png","8(1).png","9(1).png","10(1).png"];
+const docs = ["planos-1.png","cortes-1.png","vistas-1.png"];
+
+export default function Home() {
+  const [lang,setLang] = useState<"es"|"en">("es");
+  const [contact,setContact] = useState(false);
+  const [lightbox,setLightbox] = useState<string|null>(null);
+  const t=copy[lang];
+  useEffect(()=>{ document.documentElement.lang=lang; },[lang]);
+  return <main>
+    <header><a className="mark" href="#inicio">CL<span>.</span></a><nav><a href="#inicio">Inicio</a><a href="#proyectos">{t.projects}</a></nav><div className="actions"><button className="lang" onClick={()=>setLang(lang==="es"?"en":"es")}>{lang==="es"?"ES · EN":"EN · ES"}</button><button className="contactBtn" onClick={()=>setContact(true)}>{t.contact}</button></div></header>
+    <section id="inicio" className="hero">
+      <div className="blueprint" aria-hidden="true"><i/><i/><i/><i/><i/></div>
+      <div className="heroCopy"><p className="eyebrow">{t.eyebrow}</p><h1>{t.title}</h1><h2>{t.subtitle}</h2><p className="intro">{t.intro}</p><a className="arrowLink" href="#proyectos">{t.view}<b>↘</b></a></div>
+      <figure className="portrait"><img src="/assets/chiara.png" alt="Chiara Larrosa"/><figcaption>01 — {t.about}</figcaption></figure>
+      <div className="scroll">SCROLL <span/></div>
+    </section>
+    <section className="profile reveal"><div><p className="sectionNo">01 / {t.about}</p><p className="profileText">{t.aboutText}</p></div><div className="stat"><strong>{t.exp}</strong><span>{t.label}</span></div><a className="cv" href="/assets/cv-chiara-larrosa.pdf" download>{t.cv} <span>↓</span></a></section>
+    <section id="proyectos" className="projectIntro"><div className="projectHead"><p className="sectionNo">02 / {t.projects}</p><h2>{t.project}</h2><div className="meta"><span>{t.status}</span><span>{t.location}</span><span>2025</span></div><p>{t.story}</p></div><button className="heroImage" onClick={()=>setLightbox("/assets/1(1).png")}><img src="/assets/1(1).png" alt="Fachada Proyecto Guayaquil"/><span>01 / 09</span></button></section>
+    <section className="feature"><div className="featureText"><p>01</p><h3>{t.exterior}</h3><span>{t.exteriorText}</span></div><button onClick={()=>setLightbox("/assets/3(1).png")}><img src="/assets/3(1).png" alt="Interior Proyecto Guayaquil"/></button></section>
+    <section className="feature reverse"><div className="featureText"><p>02</p><h3>{t.interior}</h3><span>{t.interiorText}</span></div><button onClick={()=>setLightbox("/assets/4(1).png")}><img src="/assets/4(1).png" alt="Cocina Proyecto Guayaquil"/></button></section>
+    <section className="gallery"><div className="galleryHead"><p className="sectionNo">03 / {t.renders}</p><h2>{t.renders}</h2></div><div className="galleryGrid">{renders.slice(3).map((img,i)=><button key={img} onClick={()=>setLightbox(`/assets/${img}`)}><img src={`/assets/${img}`} alt={`${t.project} ${i+4}`}/><span>{String(i+4).padStart(2,"0")}</span></button>)}</div></section>
+    <section className="documents"><div className="docIntro"><p className="sectionNo">04 / TECHNICAL</p><h2>{t.documents}</h2><p>{t.documentsText}</p></div><div className="docGrid">{docs.map((img,i)=><button key={img} onClick={()=>setLightbox(`/assets/${img}`)}><img src={`/assets/${img}`} alt={t.documents}/><span>{[lang==="es"?"Plantas":"Plans",lang==="es"?"Cortes":"Sections",lang==="es"?"Vistas":"Elevations"][i]} ↗</span></button>)}</div></section>
+    <footer><p>{t.footer}</p><div><a href="mailto:chiaralarrosa04@gmail.com">chiaralarrosa04@gmail.com</a><button onClick={()=>setContact(true)}>{t.contact} ↗</button></div><small>© 2026 CHIARA LARROSA</small></footer>
+    {contact&&<div className="modal" onClick={()=>setContact(false)}><div className="contactCard" onClick={e=>e.stopPropagation()}><button className="x" onClick={()=>setContact(false)}>×</button><p>LET'S WORK TOGETHER</p><h2>{t.contact}</h2><a href="mailto:chiaralarrosa04@gmail.com"><span>{t.mail}</span>chiaralarrosa04@gmail.com ↗</a><a href="tel:+541165093550"><span>{t.phone}</span>11 6509 3550 ↗</a><a href="https://www.linkedin.com/in/arq-chiaralarrosa" target="_blank"><span>{t.linkedin}</span>/arq-chiaralarrosa ↗</a></div></div>}
+    {lightbox&&<div className="lightbox" onClick={()=>setLightbox(null)}><button onClick={()=>setLightbox(null)}>×</button><img src={lightbox} alt="Vista ampliada"/></div>}
+  </main>
+}
